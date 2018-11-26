@@ -92,5 +92,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PseudoConnector\PseudoConnector.csproj">
+      <Project>{893ead4e-887b-4a45-8101-a13c74025b38}</Project>
+      <Name>PseudoConnector</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

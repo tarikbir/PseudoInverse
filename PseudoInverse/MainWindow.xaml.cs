@@ -15,14 +15,32 @@ using System.Windows.Shapes;
 
 namespace PseudoInverse
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private double[,] matrix;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+
+        private void slValueChanged(object sender)
+        {
+            if (slHorizontal == null || slVertical == null|| dgMatrix == null) return;
+            var sl = sender as Slider;
+            
+            //
+        }
+
+        private void slHorizontal_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            slValueChanged(sender);
+        }
+
+        private void slVertical_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            slValueChanged(sender);
         }
     }
 }
