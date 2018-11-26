@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PseudoInverse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="450" Width="625">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -14,15 +14,24 @@
             </LinearGradientBrush>
         </Grid.Background>
         <UniformGrid Margin="10">
-            <GroupBox Header="Size Settings" HorizontalAlignment="Left" Height="90" VerticalAlignment="Top" Width="200">
-                <UniformGrid>
-                    <Label Content="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Slider x:Name="slHorizontal" Maximum="5" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" Minimum="1" SmallChange="1" Value="1" TickPlacement="TopLeft" ValueChanged="slHorizontal_ValueChanged"/>
-                    <Label Content="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Slider x:Name="slVertical" Maximum="5" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" Minimum="1" SmallChange="1" Value="1" TickPlacement="TopLeft" ValueChanged="slVertical_ValueChanged"/>
+            <GroupBox Header="Matrix Input" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="200">
+                <UniformGrid Rows="2" Columns="1">
+                    <UniformGrid VerticalAlignment="Center" HorizontalAlignment="Center" Rows="1" Columns="2">
+                        <RadioButton x:Name="rbRandom" Content="Random" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="True" Click="rbRandom_Click"/>
+                        <RadioButton x:Name="rbUser" Content="User" HorizontalAlignment="Center" VerticalAlignment="Center" Click="rbUser_Click"/>
+                    </UniformGrid>
+                    <Button x:Name="btnGenerate" Content="Generate" Click="btnGenerate_Click"/>
                 </UniformGrid>
             </GroupBox>
-            <DataGrid x:Name="dgMatrix"/>
+            <DataGrid x:Name="dgMatrix" RowHeight="25" ColumnWidth="25" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False" ScrollViewer.CanContentScroll="False"/>
+            <GroupBox x:Name="gbSizeSettings" Header="Size Settings" HorizontalAlignment="Left" Height="90" VerticalAlignment="Top" Width="200" IsEnabled="False">
+                <UniformGrid>
+                    <Label Content="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Slider x:Name="slHorizontal" Maximum="5" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" Minimum="1" SmallChange="1" Value="1" TickPlacement="TopLeft" ValueChanged="slHorizontal_ValueChanged" IsSnapToTickEnabled="True"/>
+                    <Label Content="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Slider x:Name="slVertical" Maximum="5" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" Minimum="1" SmallChange="1" Value="1" TickPlacement="TopLeft" ValueChanged="slVertical_ValueChanged" IsSnapToTickEnabled="True"/>
+                </UniformGrid>
+            </GroupBox>
         </UniformGrid>
     </Grid>
 </Window>

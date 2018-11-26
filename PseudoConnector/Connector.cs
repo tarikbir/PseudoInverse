@@ -8,19 +8,24 @@ namespace PseudoConnector
 {
     public class Connector
     {
-        public double[,] GenerateRandomMatrix(int dimension)
+        public double[,] GetRandomMatrix(int dimension)
         {
             return GenerateRandomMatrix(dimension);
         }
 
-        public double[,] GenerateRandomMatrix(int row, int column)
+        public double[,] GetRandomMatrix(int row, int column)
         {
             return GenerateRandomMatrix(row, column);
         }
 
-        public double[,] CalculatePseudoInverse(double[,] matrix)
+        public double[,] GetPseudoInverse(double[,] matrix)
         {
             return CalculatePseudoInverse(matrix);
+        }
+
+        public double[,] MultiplyMatrices(double[,] matrix1, double[,] matrix2)
+        {
+            return MatrixMultiplication(matrix1, matrix2);
         }
     }
 }

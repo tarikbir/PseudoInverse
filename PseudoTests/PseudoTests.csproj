@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PseudoConnector\PseudoConnector.csproj">
-      <Project>{893ead4e-887b-4a45-8101-a13c74025b38}</Project>
-      <Name>PseudoConnector</Name>
+    <ProjectReference Include="..\PseudoInverseLib\PseudoInverseLib.csproj">
+      <Project>{444109c0-325b-440b-892e-502819b13691}</Project>
+      <Name>PseudoInverseLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
