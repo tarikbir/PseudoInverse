@@ -94,6 +94,8 @@ namespace PseudoInverseLib
                 for (int j = 0; j < n; j++)
                 {
                     resultMatrix[i, j] = scalar * matrix[i, j];
+                    complexityA++;
+                    complexityM++;
                 }
             }
             return resultMatrix;
@@ -133,6 +135,8 @@ namespace PseudoInverseLib
                 double[,] matrixTemp = MatrixMinor(matrix, 0, a); // M[i,j]
                 double cofactor = CofactorMultiplier(0, a) * MatrixDeterminant(matrixTemp).Value; // C[i,j] = CM[i,j] . M[i,j]
                 determinant += matrix[0, a] * cofactor; // det(A) += a[i,j] . C[i,j]
+                complexityA++;
+                complexityM++;
             }
             return Math.Round(determinant,2);
         }
@@ -187,9 +191,13 @@ namespace PseudoInverseLib
                 for (int j = 0; j < n; j++)
                 {
                     minorMatrix[i, j] = CofactorMultiplier(i,j)*MatrixDeterminant(MatrixMinor(matrix, i, j)) ?? 0;
+                    complexityA++;
+                    complexityM++;
                 }
             }
             double[,] inverse = MatrixScalarMultiplication(MatrixTranspose(minorMatrix), 1 / determinant);
+            complexityA++;//MatrixScalarMultiplication
+            complexityM++;//MatrixScalarMultiplication
             return inverse;
         }
     }
