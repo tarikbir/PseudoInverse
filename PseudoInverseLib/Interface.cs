@@ -8,6 +8,11 @@ namespace PseudoInverseLib
 {
     public static class Interface
     {
+        public static int[] GetComplexity()
+        {
+            return new int[2] { Calculator.complexityA, Calculator.complexityM };
+        }
+
         public static Result<double[,]> GetRandomMatrix(int dimension)
         {
             Result<double[,]> result = new Result<double[,]>();
@@ -36,18 +41,13 @@ namespace PseudoInverseLib
             return result;
         }
 
-        public static Result<IEnumerable<double[,]>> GetPseudoInverse(double[,] matrix)
+        public static IEnumerable<double[,]> GetPseudoInverseEnumerator(double[,] matrix)
         {
-            Result<IEnumerable<double[,]>> result = new Result<IEnumerable<double[,]>>();
-            var rmatrix = Calculator.EnumeratePseudoInverse(matrix);
-            if (rmatrix != null)
+            IEnumerable<double[,]> result = Calculator.EnumeratePseudoInverse(matrix);
+            foreach (var item in result)
             {
-                result.Success = true;
-                result.Element = rmatrix;
-                return result;
+                yield return item;
             }
-            result.Error = "Unknown Error.";
-            return result;
         }
 
         public static Result<double[,]> MultiplyMatrices(double[,] matrix1, double[,] matrix2)
@@ -78,10 +78,24 @@ namespace PseudoInverseLib
             return null;
         }
 
-        public static Result<double[,]> GetInverse(double[,] matrix)
+        public static Result<double[,]> GetSquareInverse(double[,] matrix)
         {
             Result<double[,]> result = new Result<double[,]>();
             double[,] rmatrix = Calculator.InverseSquareMatrix(matrix);
+            if (rmatrix != null)
+            {
+                result.Success = true;
+                result.Element = rmatrix;
+                return result;
+            }
+            result.Error = "Unknown Error.";
+            return result;
+        }
+
+        public static Result<double[,]> GetTranspose(double[,] matrix)
+        {
+            Result<double[,]> result = new Result<double[,]>();
+            double[,] rmatrix = Calculator.MatrixTranspose(matrix);
             if (rmatrix != null)
             {
                 result.Success = true;

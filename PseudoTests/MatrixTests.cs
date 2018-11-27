@@ -12,6 +12,11 @@ namespace PseudoTests
 
         public void WriteMatrix(double[,] matrix)
         {
+            if (matrix == null)
+            {
+                Console.WriteLine("Can't find matrix.");
+                return;
+            }
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
@@ -71,6 +76,14 @@ namespace PseudoTests
         }
 
         [TestMethod]
+        public void Transpose()
+        {
+            double[,] resultMatrix = PseudoInverseLib.Interface.GetTranspose(Matrix2x3).Element;
+
+            WriteMatrix(resultMatrix);
+        }
+
+        [TestMethod]
         public void Determinant3x3()
         {
             double result = Math.Round(PseudoInverseLib.Interface.GetDeterminant(MatrixSquare).Element, 2);
@@ -83,13 +96,18 @@ namespace PseudoTests
         {
             double[,] matrix = new double[,] { { 1, 2, 3 }, { 0, 4, 5 }, { 1, 0, 6 } };
 
-            WriteMatrix(PseudoInverseLib.Interface.GetInverse(matrix).Element);
+            WriteMatrix(PseudoInverseLib.Interface.GetSquareInverse(matrix).Element);
         }
 
-        //[TestMethod]
-        //public void CalculateInverse()
-        //{
-
-        //}
+        [TestMethod]
+        public void CalculateInverse()
+        {
+            var result = PseudoInverseLib.Interface.GetPseudoInverseEnumerator(Matrix3x2);
+            foreach (var item in result)
+            {
+                WriteMatrix(item);
+                Console.WriteLine("\n");
+            }
+        }
     }
 }

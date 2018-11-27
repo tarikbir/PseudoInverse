@@ -8,24 +8,45 @@ namespace PseudoInverseLib
 {
     internal static class Calculator
     {
+        internal static int complexityM = 0;
+        internal static int complexityA = 0;
+
         internal static IEnumerable<double[,]> EnumeratePseudoInverse(double[,] matrix)
         {
-            for (int i = 0; i < 5; i++)
+            double[,] operandMatrix = MatrixTranspose(matrix);
+            yield return operandMatrix;
+            if (operandMatrix == null) yield break;
+            operandMatrix = MatrixMultiplication(operandMatrix, matrix);
+            yield return operandMatrix;
+            if (operandMatrix == null) yield break;
+            operandMatrix = InverseSquareMatrix(operandMatrix);
+            if (operandMatrix == null)
             {
-                yield return matrix;
+                operandMatrix = InverseSquareMatrix(MatrixMultiplication(matrix, MatrixTranspose(matrix)));
+                if (operandMatrix == null) yield break;
+                yield return operandMatrix;
+                operandMatrix = MatrixMultiplication(MatrixTranspose(matrix), operandMatrix);
+                yield return operandMatrix;
+            }
+            else
+            {
+                yield return operandMatrix;
+                if (operandMatrix == null) yield break;
+                operandMatrix = MatrixMultiplication(operandMatrix, MatrixTranspose(matrix));
+                yield return operandMatrix;
             }
         }
 
-        internal static double[,] CalculatePseudoInverse(double[,] matrix)
+        internal static double[,] CalculatePseudoInverse(double[,] matrix) //Formula => A'=(Aᵀ.A)⁻¹.Aᵀ
         {
-            return null;
+            return MatrixMultiplication(InverseSquareMatrix(MatrixMultiplication(MatrixTranspose(matrix), matrix)), MatrixTranspose(matrix));
         }
 
         internal static double[,] MatrixTranspose(double[,] matrix)
         {
             int row = matrix.GetLength(0);
             int column = matrix.GetLength(1);
-            double[,] matrixT = new double[row, column];
+            double[,] matrixT = new double[column, row];
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < column; j++)
@@ -53,6 +74,8 @@ namespace PseudoInverseLib
                     for (int k = 0; k < matrix2.GetLength(0); k++)
                     {
                         matrixResult[i, j] += matrix1[i, k] * matrix2[k, j];
+                        complexityA++;
+                        complexityM++;
                     }
                 }
             }
@@ -111,7 +134,7 @@ namespace PseudoInverseLib
                 double cofactor = CofactorMultiplier(0, a) * MatrixDeterminant(matrixTemp).Value; // C[i,j] = CM[i,j] . M[i,j]
                 determinant += matrix[0, a] * cofactor; // det(A) += a[i,j] . C[i,j]
             }
-            return determinant;
+            return Math.Round(determinant,2);
         }
 
         static int CofactorMultiplier(int row, int column)

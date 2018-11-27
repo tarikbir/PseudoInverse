@@ -19,8 +19,17 @@ namespace PseudoInverse
     public partial class MainWindow : Window
     {
         private double[,] matrix;
-        //private double[,] innerMatrix;
         int horizontal, vertical;
+        IEnumerator<double[,]> operationEnumerator;
+        int enumeratorIndex;
+        string[] steps = new string[]
+        {
+            "A",
+            "Aᵀ",
+            "Aᵀ.A",
+            "(Aᵀ.A)⁻¹\n\tor\n(A.Aᵀ)⁻¹",
+            "A'=(Aᵀ.A)⁻¹.Aᵀ\n\tor\nA'=Aᵀ.(A.Aᵀ)⁻¹"
+        };
 
         public MainWindow()
         {
@@ -61,6 +70,7 @@ namespace PseudoInverse
         {
             slHorizontal.Value = 1;
             slVertical.Value = 1;
+            dgMatrix.ItemsSource = null;
             gbSizeSettings.IsEnabled = false;
             btnGenerate.IsEnabled = true;
         }
@@ -69,13 +79,75 @@ namespace PseudoInverse
         {
             gbSizeSettings.IsEnabled = true;
             btnGenerate.IsEnabled = false;
+            dgMatrix.ItemsSource = null;
         }
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            matrix = PseudoInverseLib.Interface.GetRandomMatrix(5,5).Element;
+            matrix = PseudoInverseLib.Interface.GetRandomMatrix(5,4).Element;
 
             UpdateDataGrid();
+        }
+
+        private void btnCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validation.GetHasError(dgMatrix) || dgMatrix.ItemsSource == null)
+            {
+                MessageBox.Show("Can't do calculation with an error on data grid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            operationEnumerator = PseudoInverseLib.Interface.GetPseudoInverseEnumerator(matrix).GetEnumerator();
+            enumeratorIndex = 0;
+            lblCalculation.Content = steps[enumeratorIndex++];
+            btnCalculate.IsEnabled = false;
+            btnNextStep.IsEnabled = true;
+            dgMatrix.IsEnabled = false;
+
+            UpdateDataGrid(matrix);
+        }
+
+        private void btnNextStep_Click(object sender, RoutedEventArgs e)
+        {
+            if (operationEnumerator.MoveNext())
+            {
+                double[,] matrixToUpdate = operationEnumerator.Current;
+                if (matrixToUpdate == null)
+                {
+                    MessageBox.Show("Error occured during calculation!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    operationEnumerator.Dispose();
+                    btnNextStep.IsEnabled = false;
+                    btnCalculate.IsEnabled = true;
+                    return;
+                }
+                lblCalculation.Content = steps[enumeratorIndex++];
+                UpdateDataGrid(matrixToUpdate);
+            }
+            else
+            {
+                MessageBox.Show("Calculation complete.","Done",MessageBoxButton.OK,MessageBoxImage.Information);
+                operationEnumerator.Dispose();
+                btnNextStep.IsEnabled = false;
+                btnCalculate.IsEnabled = true;
+            }
+        }
+
+        private void dgMatrix_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            int x = e.Row.GetIndex();
+            int y = e.Column.DisplayIndex;
+            var edit = e.EditAction;
+            var sel = (e.EditingElement as TextBox).Text;
+            double val = 0.0;
+            if (edit == DataGridEditAction.Commit)
+                if (Double.TryParse(sel, out val))
+                {
+                    matrix[x, y] = val;
+                    btnCalculate.IsEnabled = true;
+                }
+                else
+                {
+                    btnCalculate.IsEnabled = false;
+                }
         }
 
         private void UpdateDataGrid()
@@ -93,7 +165,30 @@ namespace PseudoInverse
                 DataRow dr = dt.NewRow();
                 for (int col = 0; col < n; col++)
                 {
-                    dr[col] = matrix[row,col];
+                    dr[col] = Math.Round(matrix[row,col],1);
+                }
+                dt.Rows.Add(dr);
+            }
+
+            dgMatrix.ItemsSource = dt.DefaultView;
+        }
+
+        private void UpdateDataGrid(double[,] matrix)
+        {
+            int m = matrix.GetLength(0), n = matrix.GetLength(1);
+
+            DataTable dt = new DataTable();
+            for (int i = 0; i < n; i++)
+            {
+                dt.Columns.Add((i + 1).ToString(), typeof(double));
+            }
+
+            for (int row = 0; row < m; row++)
+            {
+                DataRow dr = dt.NewRow();
+                for (int col = 0; col < n; col++)
+                {
+                    dr[col] = Math.Round(matrix[row, col], 1);
                 }
                 dt.Rows.Add(dr);
             }
