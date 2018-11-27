@@ -142,9 +142,11 @@ namespace PseudoInverseLib
             return ((row + column) % 2 == 0) ? 1 : -1;
         }
 
-        internal static double[,] GenerateRandomMatrix(int row, int column)
+        internal static double[,] GenerateRandomMatrix()
         {
             Random random = new Random();
+            int row = random.Next(9) + 1;  // next(9) -------> creates a number between 0-8 +1 -------> 1-9
+            int column = random.Next(9) + 1; // next(9) -------> creates a number between 0-8 +1 -------> 1-9
             double[,] matrix = new double[row, column];
             for (int i = 0; i < row; i++)
             {

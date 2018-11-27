@@ -30,7 +30,7 @@ namespace PseudoInverseLib
         public static Result<double[,]> GetRandomMatrix(int row, int column)
         {
             Result<double[,]> result = new Result<double[,]>();
-            double[,] rmatrix = Calculator.GenerateRandomMatrix(row, column);
+            double[,] rmatrix = Calculator.GenerateRandomMatrix();
             if (rmatrix != null)
             {
                 result.Success = true;
