@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -19,6 +19,7 @@ namespace PseudoInverse
     public partial class MainWindow : Window
     {
         private double[,] matrix;
+        private double[,] lastUpdatedMatrix;
         int horizontal, vertical;
         IEnumerator<double[,]> operationEnumerator;
         int enumeratorIndex;
@@ -99,10 +100,8 @@ namespace PseudoInverse
             operationEnumerator = PseudoInverseLib.Interface.GetPseudoInverseEnumerator(matrix).GetEnumerator();
             enumeratorIndex = 0;
             lblCalculation.Content = steps[enumeratorIndex++];
-            btnCalculate.IsEnabled = false;
-            btnNextStep.IsEnabled = true;
-            dgMatrix.IsEnabled = false;
 
+            UpdateUIElements(false);
             UpdateDataGrid(matrix);
         }
 
@@ -115,19 +114,38 @@ namespace PseudoInverse
                 {
                     MessageBox.Show("Error occured during calculation!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     operationEnumerator.Dispose();
-                    btnNextStep.IsEnabled = false;
-                    btnCalculate.IsEnabled = true;
+                    UpdateUIElements(true);
                     return;
                 }
+                lastUpdatedMatrix = matrixToUpdate;
                 lblCalculation.Content = steps[enumeratorIndex++];
+                lblComplexity.Content = $"(Complexity: {PseudoInverseLib.Interface.GetComplexity()[0]+ PseudoInverseLib.Interface.GetComplexity()[1]})";
                 UpdateDataGrid(matrixToUpdate);
             }
             else
             {
                 MessageBox.Show("Calculation complete.","Done",MessageBoxButton.OK,MessageBoxImage.Information);
+                matrix = lastUpdatedMatrix;
                 operationEnumerator.Dispose();
-                btnNextStep.IsEnabled = false;
+                UpdateUIElements(true);
+            }
+        }
+
+        private void UpdateUIElements(bool ready)
+        {
+            if (ready)
+            {
                 btnCalculate.IsEnabled = true;
+                btnNextStep.IsEnabled = false;
+                dgMatrix.IsEnabled = true;
+                PseudoInverseLib.Interface.RefreshComplexity();
+            }
+            else
+            {
+                btnCalculate.IsEnabled = false;
+                btnNextStep.IsEnabled = true;
+                dgMatrix.IsEnabled = false;
+                lblComplexity.Visibility = Visibility.Visible;
             }
         }
 
