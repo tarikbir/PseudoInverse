@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,12 @@ namespace PseudoInverseLib
         public static int[] GetComplexity()
         {
             return new int[2] { Calculator.complexityA, Calculator.complexityM };
+        }
+
+        public static void RefreshComplexity()
+        {
+            Calculator.complexityA = 0;
+            Calculator.complexityM = 0;
         }
 
         public static Result<double[,]> GetRandomMatrix(int dimension)
