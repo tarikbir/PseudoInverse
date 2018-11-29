@@ -156,7 +156,9 @@ namespace PseudoInverseLib
             {
                 for (int j = 0; j < column; j++)
                 {
-                    matrix[i, j] = Math.Round(((random.NextDouble() + 0.1) * 10) % 10, 1);
+                    matrix[i, j] = (random.Next(1,9)+random.NextDouble());
+                    //Math.Round(((random.NextDouble() + 0.1) * 10) % 10, 1);
+                    
                 }
             }
             return matrix;
@@ -172,6 +174,7 @@ namespace PseudoInverseLib
                 for (int j = 0; j < column; j++)
                 {
                     matrix[i, j] = Math.Round(((random.NextDouble() + 0.1) * 10) % 10, 1);
+
                 }
             }
             return matrix;
