@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PseudoInverse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="950">
+        Title="Pseudo Inverse Calculator" Height="300" Width="1000">
     <Window.Resources>
         <Style x:Key="DataGridContentCellCentering" TargetType="{x:Type DataGridCell}">
             <Setter Property="Template">
@@ -46,7 +46,7 @@
                     </UniformGrid>
                 </GroupBox>
             </UniformGrid>
-            <DataGrid x:Name="dgMatrix" RowHeight="35" ColumnWidth="35" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False" ScrollViewer.CanContentScroll="False" CellStyle="{DynamicResource DataGridContentCellCentering}" CellEditEnding="dgMatrix_CellEditEnding"/>
+            <DataGrid x:Name="dgMatrix" RowHeight="35" ColumnWidth="65" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False" ScrollViewer.CanContentScroll="False" CellStyle="{DynamicResource DataGridContentCellCentering}" CellEditEnding="dgMatrix_CellEditEnding"/>
             <GroupBox x:Name="gbControls" Header="Controls" Margin="5,0,0,0">
                 <Grid>
                     <Button x:Name="btnCalculate" Content="Calculate" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8" Click="btnCalculate_Click"/>

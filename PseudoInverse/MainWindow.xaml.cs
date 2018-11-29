@@ -85,7 +85,7 @@ namespace PseudoInverse
 
         private void btnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            matrix = PseudoInverseLib.Interface.GetRandomMatrix(5,4).Element;
+            matrix = PseudoInverseLib.Interface.GetRandomMatrix().Element;
 
             UpdateDataGrid();
         }
@@ -170,25 +170,7 @@ namespace PseudoInverse
 
         private void UpdateDataGrid()
         {
-            int m = matrix.GetLength(0), n = matrix.GetLength(1);
-
-            DataTable dt = new DataTable();
-            for (int i = 0; i < n; i++)
-            {
-                dt.Columns.Add((i+1).ToString(), typeof(double));
-            }
-
-            for (int row = 0; row < m; row++)
-            {
-                DataRow dr = dt.NewRow();
-                for (int col = 0; col < n; col++)
-                {
-                    dr[col] = Math.Round(matrix[row,col],1);
-                }
-                dt.Rows.Add(dr);
-            }
-
-            dgMatrix.ItemsSource = dt.DefaultView;
+            UpdateDataGrid(matrix);
         }
 
         private void UpdateDataGrid(double[,] matrix)
@@ -206,7 +188,7 @@ namespace PseudoInverse
                 DataRow dr = dt.NewRow();
                 for (int col = 0; col < n; col++)
                 {
-                    dr[col] = Math.Round(matrix[row, col], 1);
+                    dr[col] = Math.Round(matrix[row, col], 4);
                 }
                 dt.Rows.Add(dr);
             }

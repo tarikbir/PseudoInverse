@@ -94,7 +94,6 @@ namespace PseudoInverseLib
                 for (int j = 0; j < n; j++)
                 {
                     resultMatrix[i, j] = scalar * matrix[i, j];
-                    complexityA++;
                     complexityM++;
                 }
             }
@@ -134,8 +133,8 @@ namespace PseudoInverseLib
                 if (matrix[0, a] == 0) continue; // if M[a,b] == 0, skip to reduce calculation time.
                 double[,] matrixTemp = MatrixMinor(matrix, 0, a); // M[i,j]
                 double cofactor = CofactorMultiplier(0, a) * MatrixDeterminant(matrixTemp).Value; // C[i,j] = CM[i,j] . M[i,j]
+                complexityM++;
                 determinant += matrix[0, a] * cofactor; // det(A) += a[i,j] . C[i,j]
-                complexityA++;
                 complexityM++;
             }
             return Math.Round(determinant,2);
@@ -143,6 +142,7 @@ namespace PseudoInverseLib
 
         static int CofactorMultiplier(int row, int column)
         {
+            complexityA++;
             return ((row + column) % 2 == 0) ? 1 : -1;
         }
 
@@ -157,24 +157,7 @@ namespace PseudoInverseLib
                 for (int j = 0; j < column; j++)
                 {
                     matrix[i, j] = (random.Next(1,9)+random.NextDouble());
-                    //Math.Round(((random.NextDouble() + 0.1) * 10) % 10, 1);
                     
-                }
-            }
-            return matrix;
-        }
-
-        internal static double[,] GenerateRandomMatrix(int row)
-        {
-            Random random = new Random();
-            int column = row;
-            double[,] matrix = new double[row, column];
-            for (int i = 0; i < row; i++)
-            {
-                for (int j = 0; j < column; j++)
-                {
-                    matrix[i, j] = Math.Round(((random.NextDouble() + 0.1) * 10) % 10, 1);
-
                 }
             }
             return matrix;
@@ -194,13 +177,11 @@ namespace PseudoInverseLib
                 for (int j = 0; j < n; j++)
                 {
                     minorMatrix[i, j] = CofactorMultiplier(i,j)*MatrixDeterminant(MatrixMinor(matrix, i, j)) ?? 0;
-                    complexityA++;
                     complexityM++;
                 }
             }
             double[,] inverse = MatrixScalarMultiplication(MatrixTranspose(minorMatrix), 1 / determinant);
-            complexityA++;//MatrixScalarMultiplication
-            complexityM++;//MatrixScalarMultiplication
+            complexityM++;
             return inverse;
         }
     }

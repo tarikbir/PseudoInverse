@@ -19,21 +19,7 @@ namespace PseudoInverseLib
             Calculator.complexityM = 0;
         }
 
-        public static Result<double[,]> GetRandomMatrix(int dimension)
-        {
-            Result<double[,]> result = new Result<double[,]>();
-            double[,] rmatrix = Calculator.GenerateRandomMatrix(dimension);
-            if (rmatrix != null)
-            {
-                result.Success = true;
-                result.Element = rmatrix;
-                return result;
-            }
-            result.Error = "Unknown Error.";
-            return result;
-        }
-
-        public static Result<double[,]> GetRandomMatrix(int row, int column)
+        public static Result<double[,]> GetRandomMatrix()
         {
             Result<double[,]> result = new Result<double[,]>();
             double[,] rmatrix = Calculator.GenerateRandomMatrix();
